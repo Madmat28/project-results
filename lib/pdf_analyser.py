@@ -16,6 +16,7 @@ class PdfAnalyser:
 
     def analyse_page(self, page: PageObject) -> dict:
         text = page.extract_text()
+        print(text)
         qualification = "QUALIFICATION" in text
         start_of_athlete_line = []
         for index, line in enumerate(text.split("\n")):
