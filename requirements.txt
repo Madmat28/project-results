@@ -1,2 +1,2 @@
-PyPDF2
-pytesseract
+PyPDF2==3.0.1
+pandas==2.0.3
