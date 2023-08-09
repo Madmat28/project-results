@@ -1,23 +1,23 @@
 import os
+from pprint import pprint
 
-from PyPDF2 import PdfReader
-import sys
+from PyPDF2 import PageObject, PdfReader
 
 from lib.athlete_result import AthleteResult
 
 
 class PdfAnalyser:
-    def analayse_pdf(self, pdf_name):
+    def analayse_pdf(self, pdf_name: str) -> dict:
         reader = PdfReader(f"data/{pdf_name}")
-        athlete_list = []
+        all_athletes = {}
         for page in reader.pages:
-            athlete_list += self.analyse_page(page)
-        return athlete_list
+            all_athletes = {**all_athletes, **self.analyse_page(page)}
+        return all_athletes
 
-    def analyse_page(self, page):
+    def analyse_page(self, page: PageObject) -> dict:
         text = page.extract_text()
-        qualification = "QUALIFICATION" in text
         print(text)
+        qualification = "QUALIFICATION" in text
         start_of_athlete_line = []
         for index, line in enumerate(text.split("\n")):
             if line.endswith("B:") and len(line.split(".")) <= 4:
@@ -25,7 +25,8 @@ class PdfAnalyser:
             elif line.endswith("B:") and len(line.split(".")) == 8:
                 start_of_athlete_line.append(index - 1)
         start_of_athlete_line.append(len(text.split("\n")))
-        athlete_list = []
+
+        all_athletes = {}
         for i in range(len(start_of_athlete_line) - 1):
             athlete_line = "\n".join(
                 text.split("\n")[
@@ -33,8 +34,8 @@ class PdfAnalyser:
                 ]
             )
             athlete = AthleteResult(string=athlete_line, qualification=qualification)
-            print(athlete)
-        return athlete_list
+            all_athletes[f"{athlete.last_name} {athlete.first_name}"] = athlete
+        return all_athletes
 
 
 if __name__ == "__main__":
@@ -44,4 +45,5 @@ if __name__ == "__main__":
     file_name = "taivalkoskiM.pdf"
     # file_name = "alpe.pdf"
     analyser = PdfAnalyser()
-    analyser.analayse_pdf(file_name)
+    res = analyser.analayse_pdf(file_name)
+    # pprint(res)
