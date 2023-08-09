@@ -168,8 +168,6 @@ class AthleteResult:
         string = string.replace("\n", " ")
         string = string.replace(" Q1:", "")
         string = string.replace("PH:", "")
-        print(pdf_type)
-        print(string)
         match pdf_type:
             case 3:
                 self.ski_deduction_judge1, string = self.skip_until(string=string, char=".", pos=1)
@@ -244,8 +242,12 @@ class AthleteResult:
 
         full_name = string[:current_char]
         string = string[current_char:]
-
         full_name = full_name.split(" ")
+        for element in full_name:
+            if element == "":
+                full_name.remove("")
+
+        found = False
         for index, name in enumerate(reversed(full_name)):
             if name == "":
                 continue
@@ -255,7 +257,10 @@ class AthleteResult:
                     caps_letters += 1
                 if caps_letters > 1:
                     last_sirname = index
+                    found = True
                     break
+            if found:
+                break
         last_names = full_name[: len(full_name) - last_sirname]
         first_names = full_name[len(full_name) - last_sirname :]
 
@@ -329,7 +334,6 @@ class AthleteResult:
                 self.ski_deduction_total, string = self.skip_until(string=string, char=".", pos=1)
             case 5 | 6:
                 self.result, string = self.skip_until(string=string, char=" ", pos=0)
-                print(self.result, string)
 
     def strip(self, string: str, end: int):
         attr = string[0:end]
@@ -338,3 +342,27 @@ class AthleteResult:
         while len(string) > 0 and string[0] == " ":
             string = string[1:]
         return attr, string
+
+
+if __name__ == "__main__":
+    full_name = "OFFEL VILLAUCOURT de Arthur"
+    full_name = full_name.split(" ")
+    print(full_name)
+    for index, name in enumerate(reversed(full_name)):
+        if name == "":
+            continue
+        caps_letters = 0
+        for char in name:
+            if char.isupper():
+                caps_letters += 1
+            if caps_letters > 1:
+                last_sirname = index
+                break
+    last_names = full_name[: len(full_name) - last_sirname]
+    first_names = full_name[len(full_name) - last_sirname :]
+
+    first_name = " ".join(first_names)
+    last_name = " ".join(last_names)
+
+    print(first_name) + "|"
+    print(last_name) + "|"
