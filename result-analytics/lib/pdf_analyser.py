@@ -1,5 +1,4 @@
 import os
-from pprint import pprint
 
 from PyPDF2 import PageObject, PdfReader
 
@@ -28,11 +27,7 @@ class PdfAnalyser:
 
         all_athletes = {}
         for i in range(len(start_of_athlete_line) - 1):
-            athlete_line = "\n".join(
-                text.split("\n")[
-                    start_of_athlete_line[i] : start_of_athlete_line[i + 1]
-                ]
-            )
+            athlete_line = "\n".join(text.split("\n")[start_of_athlete_line[i] : start_of_athlete_line[i + 1]])
             athlete = AthleteResult(string=athlete_line, qualification=qualification)
             all_athletes[f"{athlete.last_name} {athlete.first_name}"] = athlete
         return all_athletes

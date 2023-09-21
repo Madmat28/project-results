@@ -162,7 +162,7 @@ class AthleteResult:
         error_msg = "Error: Unknown pdf type."
         raise ValueError(error_msg)
 
-    def analyse_string(self, string: str, qualification: bool):
+    def analyse_string(self, string: str, qualification: bool):  # noqa
         splited = string.split("\n")
         pdf_type = self.pdf_type(splited, qualification)
         string = string.replace("\n", " ")
