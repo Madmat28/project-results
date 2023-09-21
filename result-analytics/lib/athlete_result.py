@@ -363,6 +363,5 @@ if __name__ == "__main__":
 
     first_name = " ".join(first_names)
     last_name = " ".join(last_names)
-
     print(first_name) + "|"
     print(last_name) + "|"
