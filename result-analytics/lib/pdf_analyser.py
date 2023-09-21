@@ -1,5 +1,4 @@
 import os
-from pprint import pprint
 
 from PyPDF2 import PageObject, PdfReader
 
